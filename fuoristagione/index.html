@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuori stagione — dove conviene andare</title>
+
+  <style>
+    :root {
+      --notte: #11212b;
+      --carta: #f7f4ee;
+      --inchiostro: #16242c;
+      --grigio: #5d6f78;
+      --oro: #c78a2e;
+      --gelo: #8fb3c2;
+      --verde: #3f7a5a;
+      --rosso: #a4503c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--notte);
+      color: var(--inchiostro);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    header { max-width: 900px; margin: 0 auto; padding: 56px 20px 20px; color: var(--carta); }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px; font-weight: 400; line-height: 1.15; margin: 0 0 12px;
+    }
+
+    header p { margin: 0; max-width: 48ch; color: var(--gelo); }
+
+    /* --- Barra di ricerca --- */
+    .cerca {
+      max-width: 900px; margin: 0 auto; padding: 24px 20px 12px;
+      display: flex; gap: 10px; align-items: center;
+    }
+
+    .cerca input {
+      flex: 1;                       /* occupa tutto lo spazio disponibile */
+      font: inherit; font-size: 17px;
+      color: var(--carta);
+      background: #0b1920;
+      border: 1px solid #33505f;
+      border-radius: 6px;
+      padding: 13px 16px;
+    }
+
+    .cerca input::placeholder { color: #5b7c8b; }
+    .cerca input:focus { outline: none; border-color: var(--gelo); }
+
+    .cerca button {
+      font: inherit; font-size: 14px;
+      color: var(--gelo); background: transparent;
+      border: 1px solid #33505f; border-radius: 6px;
+      padding: 12px 16px; cursor: pointer;
+    }
+
+    .cerca button:hover { border-color: var(--gelo); }
+
+    .mesi {
+      max-width: 900px; margin: 0 auto; padding: 0 20px 28px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+
+    .mesi button {
+      font: inherit; font-size: 14px;
+      color: var(--gelo); background: transparent;
+      border: 1px solid #33505f; border-radius: 999px;
+      padding: 6px 14px; cursor: pointer;
+    }
+
+    .mesi button:hover { border-color: var(--gelo); }
+
+    .mesi button.attivo {
+      background: var(--oro); border-color: var(--oro);
+      color: #1a1204; font-weight: 600;
+    }
+
+    .mesi button:focus-visible,
+    .cerca button:focus-visible { outline: 2px solid var(--carta); outline-offset: 2px; }
+
+    main {
+      max-width: 900px; margin: 0 auto; padding: 0 20px 48px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+    }
+
+    .scheda { background: var(--carta); border-radius: 4px; padding: 24px; }
+
+    .testa {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+      border-bottom: 1px solid #ddd6c8; padding-bottom: 14px;
+    }
+
+    .testa h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 400; margin: 0; }
+    .paese { display: block; font-size: 13px; color: var(--grigio); }
+
+    .stagione { font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .stagione.bassa { color: var(--verde); }
+    .stagione.media { color: var(--oro); }
+    .stagione.alta  { color: var(--rosso); }
+
+
+    /* --- Priorità: cosa conta per te --- */
+    .priorita {
+      max-width: 900px; margin: 0 auto; padding: 4px 20px 24px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px 20px;
+      color: var(--gelo);
+    }
+
+    .leva label { display: block; font-size: 13px; margin-bottom: 4px; }
+    .leva output { color: var(--oro); font-weight: 600; }
+
+    .leva input[type=range] {
+      width: 100%; accent-color: var(--oro); cursor: pointer;
+    }
+
+    .punteggio { text-align: right; white-space: nowrap; }
+    .punteggio b { font-size: 30px; font-weight: 600; color: var(--oro); display: block; line-height: 1; }
+    .punteggio span { font-size: 11px; color: var(--grigio); }
+
+    .perche {
+      background: #efe9dd; border-radius: 3px; padding: 10px 12px;
+      font-size: 13px; margin: 0 0 16px;
+    }
+
+    .prezzo { margin: 16px 0 14px; }
+    .prezzo b { font-size: 26px; }
+    .prezzo span { font-size: 14px; color: var(--grigio); }
+
+    /* Da dove viene il prezzo: rilevato a mano o solo stimato */
+    .fonte { font-size: 12px; margin: 0 0 18px; color: var(--grigio); }
+    .fonte.stima { color: var(--rosso); }
+
+    .dati { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    .dato span { display: block; font-size: 12px; color: var(--grigio); }
+    .dato b { font-weight: 600; }
+
+    .blocco { margin-bottom: 14px; }
+    .blocco h3 { font-size: 13px; font-weight: 600; color: var(--grigio); margin: 0 0 4px; }
+    .blocco p { margin: 0; font-size: 15px; }
+
+    .vuoto {
+      grid-column: 1 / -1;
+      color: var(--gelo);
+      border: 1px dashed #33505f; border-radius: 4px; padding: 28px;
+    }
+
+    footer {
+      max-width: 900px; margin: 0 auto; padding: 0 20px 48px;
+      color: var(--gelo); font-size: 13px;
+    }
+
+    footer p { max-width: 62ch; }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 32px; }
+      header { padding-top: 36px; }
+      .cerca { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Fuori stagione costa la metà.<br>Ecco dove vale la pena.</h1>
+    <p>Cerca una città, un mese, o tutti e due insieme. Oppure scegli un mese e guarda dove conviene andare.</p>
+  </header>
+
+  <div class="cerca">
+    <input id="cerca" type="search" autocomplete="off"
+           placeholder="Prova: praga gennaio, oppure atene, oppure aprile">
+    <button id="pulisci" type="button">Pulisci</button>
+  </div>
+
+  <nav class="mesi" id="mesi"></nav>
+
+  <div class="priorita" id="priorita"></div>
+
+  <main id="lista"></main>
+
+  <footer>
+    <p id="nota"></p>
+  </footer>
+
+  <script src="citta.js"></script>
+  <script>
+    const mesi = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
+                  "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+
+    let meseScelto = "gennaio";
+    let cittaCercate = [];   // vuoto = mostra tutte le città
+
+    const boxMesi = document.getElementById("mesi");
+    const lista = document.getElementById("lista");
+    const campo = document.getElementById("cerca");
+
+    // Toglie accenti e maiuscole, così "Atene", "atene" e "àtene" diventano uguali.
+    // È il passaggio che rende una ricerca tollerante agli errori di battitura.
+    function normalizza(testo) {
+      return testo
+        .toLowerCase()
+        .normalize("NFD")                  // separa le lettere dagli accenti
+        .replace(/[\u0300-\u036f]/g, "")   // butta via gli accenti
+        .trim();
+    }
+
+    // Se i prezzi di quella città non sono ancora stati rilevati, restituisco null:
+    // il resto del codice sa cosa farne e mostra "da rilevare" invece di inventare.
+    function prezzoDelMese(c, stagione) {
+      if (c.hotelBassa === null || c.hotelAlta === null) return null;
+      if (stagione === "bassa") return c.hotelBassa;
+      if (stagione === "alta")  return c.hotelAlta;
+      return Math.round((c.hotelBassa + c.hotelAlta) / 2);
+    }
+
+    function risparmio(c, prezzo) {
+      return Math.round((1 - prezzo / c.hotelAlta) * 100);
+    }
+
+    // ---------- IL MOTORE DEL PUNTEGGIO ----------
+    //
+    // Ogni criterio riceve un voto da 0 a 100 per quella città in quel mese.
+    // Poi i voti vengono mediati usando i pesi che l'utente sceglie con i cursori.
+    // È lo stesso principio dei motori di ricerca: non esiste "il migliore",
+    // esiste il migliore PER TE.
+
+    // Quanto contano i criteri. 0 = non mi interessa, 3 = fondamentale.
+    const pesi = { prezzo: 2, caldo: 2, sole: 1, sicurezza: 1, cibo: 1 };
+
+    const etichette = {
+      prezzo: "Spendere poco",
+      caldo: "Clima mite",
+      sole: "Giorni di sole",
+      sicurezza: "Sicurezza",
+      cibo: "Mangiare a poco"
+    };
+
+    // Trasforma un valore in un voto 0-100, sapendo il minimo e il massimo possibili.
+    function voto(valore, minimo, massimo) {
+      const v = (valore - minimo) / (massimo - minimo);
+      return Math.max(0, Math.min(1, v)) * 100;
+    }
+
+    function votiDi(c, mese) {
+      const m = c.mesi[mese];
+      const prezzo = prezzoDelMese(c, m.stagione);
+
+      return {
+        prezzo: prezzo === null ? null : voto(200 - prezzo, 0, 160),
+        caldo: m.tmax >= 20 && m.tmax <= 28 ? 100 : (m.tmax > 28 ? voto(40 - m.tmax, 0, 12) : voto(m.tmax, -5, 20)),
+        sole: voto(m.sole, 30, 340),
+        sicurezza: c.sicurezza === null ? null : voto(c.sicurezza, 40, 80),
+        cibo: c.pasto === null ? null : voto(20 - c.pasto, 0, 12)
+      };
+    }
+
+    function punteggioDi(c, mese) {
+      const v = votiDi(c, mese);
+      let somma = 0, totalePesi = 0;
+
+      for (const criterio in pesi) {
+        if (v[criterio] === null) continue;   // dato mancante: quel criterio non vota
+        somma += v[criterio] * pesi[criterio];
+        totalePesi += pesi[criterio];
+      }
+
+      // Se l'utente azzera tutti i cursori, evito la divisione per zero.
+      return totalePesi === 0 ? 0 : Math.round(somma / totalePesi);
+    }
+
+    // Il criterio in cui questa città va meglio, tra quelli che interessano all'utente.
+    function puntoForte(c, mese) {
+      const v = votiDi(c, mese);
+      let migliore = null, votoMigliore = -1;
+
+      for (const criterio in pesi) {
+        if (pesi[criterio] > 0 && v[criterio] !== null && v[criterio] > votoMigliore) {
+          votoMigliore = v[criterio];
+          migliore = criterio;
+        }
+      }
+      return migliore;
+    }
+
+    // Quanti criteri non hanno ancora un dato: serve a dirlo sulla scheda.
+    function datiMancanti(c, mese) {
+      const v = votiDi(c, mese);
+      const mancanti = [];
+      for (const criterio in v) {
+        if (v[criterio] === null) mancanti.push(etichette[criterio].toLowerCase());
+      }
+      return mancanti;
+    }
+
+    // ---------- I CURSORI DELLE PRIORITÀ ----------
+    const boxPriorita = document.getElementById("priorita");
+
+    for (const criterio in pesi) {
+      const leva = document.createElement("div");
+      leva.className = "leva";
+      leva.innerHTML =
+        '<label>' + etichette[criterio] + ': <output id="out-' + criterio + '">' + pesi[criterio] + '</output></label>' +
+        '<input type="range" min="0" max="3" step="1" value="' + pesi[criterio] + '" id="lev-' + criterio + '">';
+      boxPriorita.appendChild(leva);
+
+      leva.querySelector("input").addEventListener("input", function () {
+        pesi[criterio] = Number(this.value);
+        document.getElementById("out-" + criterio).textContent = this.value;
+        disegnaCitta();
+      });
+    }
+
+    // ---------- I PULSANTI DEI MESI ----------
+    mesi.forEach(function (mese) {
+      const bottone = document.createElement("button");
+      bottone.textContent = mese;
+      bottone.addEventListener("click", function () {
+        meseScelto = mese;
+        disegnaMesi();
+        disegnaCitta();
+      });
+      boxMesi.appendChild(bottone);
+    });
+
+    function disegnaMesi() {
+      boxMesi.querySelectorAll("button").forEach(function (b) {
+        b.classList.toggle("attivo", b.textContent === meseScelto);
+      });
+    }
+
+    // ---------- LA RICERCA ----------
+    function interpreta(testo) {
+      const parole = normalizza(testo).split(/\s+/).filter(Boolean);
+      cittaCercate = [];
+
+      parole.forEach(function (parola) {
+        if (parola.length < 3) return;
+
+        const mese = mesi.find(function (m) { return m.startsWith(parola); });
+        if (mese) { meseScelto = mese; return; }
+
+        citta.forEach(function (c) {
+          if (normalizza(c.nome).startsWith(parola) && !cittaCercate.includes(c.nome)) {
+            cittaCercate.push(c.nome);
+          }
+        });
+      });
+    }
+
+    campo.addEventListener("input", function () {
+      interpreta(campo.value);
+      disegnaMesi();
+      disegnaCitta();
+    });
+
+    document.getElementById("pulisci").addEventListener("click", function () {
+      campo.value = "";
+      cittaCercate = [];
+      disegnaCitta();
+      campo.focus();
+    });
+
+    // ---------- LE SCHEDE ----------
+    function disegnaCitta() {
+      let scelte = citta.slice();
+
+      if (cittaCercate.length > 0) {
+        scelte = scelte.filter(function (c) { return cittaCercate.includes(c.nome); });
+      }
+
+      // Ordino per punteggio: il migliore per le priorità scelte viene per primo.
+      scelte.sort(function (a, b) {
+        return punteggioDi(b, meseScelto) - punteggioDi(a, meseScelto);
+      });
+
+      lista.innerHTML = "";
+
+      if (scelte.length === 0) {
+        lista.innerHTML = '<p class="vuoto">Nessuna città con questo nome. Per ora ci sono ' +
+          citta.map(function (c) { return c.nome; }).join(", ") + '.</p>';
+        aggiornaNota();
+        return;
+      }
+
+      scelte.forEach(function (c) {
+        const m = c.mesi[meseScelto];
+        const prezzo = prezzoDelMese(c, m.stagione);
+        const sconto = risparmio(c, prezzo);
+        const notte = m.stagione === "alta" ? c.notteAlta : c.notteBassa;
+        const punti = punteggioDi(c, meseScelto);
+        const forte = puntoForte(c, meseScelto);
+
+        const mancanti = datiMancanti(c, meseScelto);
+
+        const riga = prezzo === null
+          ? '<span>Prezzo hotel non ancora rilevato</span>'
+          : (sconto > 0
+            ? `<b>${prezzo} €</b> <span>a notte · ${sconto}% meno che in alta stagione</span>`
+            : `<b>${prezzo} €</b> <span>a notte · è il periodo più caro</span>`);
+
+        const fonte = prezzo === null
+          ? '<p class="fonte stima">Scheda incompleta: manca ' + mancanti.join(", ") + '</p>'
+          : '<p class="fonte ' + (c.prezziRilevati ? '' : 'stima') + '">' +
+            (c.prezziRilevati ? 'Prezzo rilevato a mano su Booking' : 'Stima di partenza, ancora da verificare') +
+            '</p>';
+
+        lista.innerHTML += `
+          <article class="scheda">
+            <div class="testa">
+              <h2>${c.nome}<span class="paese">${c.paese} · ${meseScelto}</span></h2>
+              <div class="punteggio"><b>${punti}</b><span>su 100 per te</span></div>
+            </div>
+
+            <p class="perche">
+              <strong>Stagione ${m.stagione}.</strong>
+              ${forte ? "Il suo punto forte tra le cose che ti interessano: " + etichette[forte].toLowerCase() + "." : "Alza almeno un cursore per avere un consiglio."}
+            </p>
+
+            <p class="prezzo">${riga}</p>
+            ${fonte}
+
+            <div class="dati">
+              <div class="dato"><span>Temperature</span><b>da ${m.tmin}° a ${m.tmax}°</b></div>
+              <div class="dato"><span>Ore di sole nel mese</span><b>circa ${m.sole}</b></div>
+              <div class="dato"><span>Pasto in trattoria</span><b>${c.pasto === null ? "—" : c.pasto + " €"}</b></div>
+              <div class="dato"><span>Caffè e birra</span><b>${c.caffe === null ? "—" : c.caffe + " € / " + c.birra + " €"}</b></div>
+              <div class="dato"><span>Sicurezza</span><b>${c.sicurezza === null ? "—" : c.sicurezza + "/100"}</b></div>
+            </div>
+
+            <div class="blocco"><h3>Da vedere</h3><p>${c.vedere.join(" · ")}</p></div>
+            <div class="blocco"><h3>Cosa mangiare</h3><p>${c.mangiare.join(" · ")}</p></div>
+            ${notte ? `<div class="blocco"><h3>La sera</h3><p>${notte}</p></div>` : ""}
+          </article>
+        `;
+      });
+
+      aggiornaNota();
+    }
+
+    function aggiornaNota() {
+      document.getElementById("nota").textContent =
+        "Il punteggio è calcolato sui cursori qui sopra: cambiali e l'ordine cambia. " +
+        "Prezzi hotel: rilevati a mano dove indicato, altrove stime da verificare. " +
+        "Cibo e sicurezza: Numbeo 2026. Clima: medie storiche.";
+    }
+
+    disegnaMesi();
+    disegnaCitta();
+  </script>
+
+</body>
+</html>
