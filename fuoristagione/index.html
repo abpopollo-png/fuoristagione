@@ -1,460 +1,427 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fuori stagione — dove conviene andare</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuori stagione — dove conviene andare</title>
 
-  <style>
-    :root {
-      --notte: #11212b;
-      --carta: #f7f4ee;
-      --inchiostro: #16242c;
-      --grigio: #5d6f78;
-      --oro: #c78a2e;
-      --gelo: #8fb3c2;
-      --verde: #3f7a5a;
-      --rosso: #a4503c;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    * { box-sizing: border-box; }
+<style>
+  :root{
+    --carta:#f4f1ea;
+    --inchiostro:#17130f;
+    --seppia:#6d6255;
+    --filo:#d8d0c1;
+    --rosso:#a33a28;
+    --verde:#3d6b4f;
+    --oro:#9a7524;
+  }
 
-    body {
-      margin: 0;
-      background: var(--notte);
-      color: var(--inchiostro);
-      font-family: "Segoe UI", system-ui, sans-serif;
-      line-height: 1.5;
-    }
+  *{box-sizing:border-box}
 
-    header { max-width: 900px; margin: 0 auto; padding: 56px 20px 20px; color: var(--carta); }
+  body{
+    margin:0;
+    background:var(--carta);
+    color:var(--inchiostro);
+    font-family:Inter,system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
 
-    h1 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 42px; font-weight: 400; line-height: 1.15; margin: 0 0 12px;
-    }
+  .foglio{max-width:1040px;margin:0 auto;padding:0 28px}
 
-    header p { margin: 0; max-width: 48ch; color: var(--gelo); }
+  /* ---------- TESTATA ---------- */
+  .testata{border-bottom:3px double var(--inchiostro);padding:26px 0 14px;margin-bottom:0}
 
-    /* --- Barra di ricerca --- */
-    .cerca {
-      max-width: 900px; margin: 0 auto; padding: 24px 20px 12px;
-      display: flex; gap: 10px; align-items: center;
-    }
+  .riga-alta{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--seppia);
+    border-bottom:1px solid var(--filo);padding-bottom:10px;margin-bottom:18px;
+  }
 
-    .cerca input {
-      flex: 1;                       /* occupa tutto lo spazio disponibile */
-      font: inherit; font-size: 17px;
-      color: var(--carta);
-      background: #0b1920;
-      border: 1px solid #33505f;
-      border-radius: 6px;
-      padding: 13px 16px;
-    }
+  .marchio{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:400;
+    font-size:clamp(38px,7vw,74px);
+    line-height:.95;
+    letter-spacing:-.02em;
+    margin:0 0 14px;
+  }
 
-    .cerca input::placeholder { color: #5b7c8b; }
-    .cerca input:focus { outline: none; border-color: var(--gelo); }
+  .occhiello{
+    font-family:Fraunces,Georgia,serif;
+    font-size:clamp(17px,2.2vw,21px);
+    font-weight:300;
+    font-style:italic;
+    color:var(--seppia);
+    max-width:46ch;
+    margin:0 0 20px;
+  }
 
-    .cerca button {
-      font: inherit; font-size: 14px;
-      color: var(--gelo); background: transparent;
-      border: 1px solid #33505f; border-radius: 6px;
-      padding: 12px 16px; cursor: pointer;
-    }
+  /* ---------- STRUMENTI ---------- */
+  .strumenti{padding:22px 0;border-bottom:1px solid var(--filo)}
 
-    .cerca button:hover { border-color: var(--gelo); }
+  .etichetta{
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--seppia);display:block;margin-bottom:8px;
+  }
 
-    .mesi {
-      max-width: 900px; margin: 0 auto; padding: 0 20px 28px;
-      display: flex; flex-wrap: wrap; gap: 8px;
-    }
+  .campo{
+    width:100%;font:inherit;font-size:17px;
+    background:transparent;color:var(--inchiostro);
+    border:none;border-bottom:1.5px solid var(--inchiostro);
+    padding:8px 0 10px;border-radius:0;
+  }
+  .campo::placeholder{color:#a79b8a}
+  .campo:focus{outline:none;border-bottom-color:var(--rosso)}
 
-    .mesi button {
-      font: inherit; font-size: 14px;
-      color: var(--gelo); background: transparent;
-      border: 1px solid #33505f; border-radius: 999px;
-      padding: 6px 14px; cursor: pointer;
-    }
+  .mesi{display:flex;flex-wrap:wrap;gap:2px 0;margin-top:22px}
 
-    .mesi button:hover { border-color: var(--gelo); }
+  .mesi button{
+    font:inherit;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    background:none;border:none;border-bottom:2px solid transparent;
+    color:var(--seppia);padding:7px 13px 6px;cursor:pointer;
+  }
+  .mesi button:hover{color:var(--inchiostro)}
+  .mesi button.attivo{color:var(--inchiostro);border-bottom-color:var(--rosso);font-weight:600}
 
-    .mesi button.attivo {
-      background: var(--oro); border-color: var(--oro);
-      color: #1a1204; font-weight: 600;
-    }
+  .priorita{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
+    gap:16px 26px;margin-top:24px;
+  }
+  .leva label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--seppia);display:block;margin-bottom:2px}
+  .leva output{color:var(--rosso);font-weight:600}
+  .leva input[type=range]{width:100%;accent-color:var(--rosso);cursor:pointer}
 
-    .mesi button:focus-visible,
-    .cerca button:focus-visible { outline: 2px solid var(--carta); outline-offset: 2px; }
+  /* ---------- ARTICOLI ---------- */
+  .conteggio{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--seppia);
+    padding:22px 0 0;
+  }
 
-    main {
-      max-width: 900px; margin: 0 auto; padding: 0 20px 48px;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
-    }
+  .voce{
+    display:grid;grid-template-columns:78px 1fr;gap:0 26px;
+    padding:34px 0;border-bottom:1px solid var(--filo);
+  }
 
-    .scheda { background: var(--carta); border-radius: 4px; padding: 24px; }
+  .posizione{
+    font-family:Fraunces,serif;font-size:52px;line-height:.85;
+    color:var(--filo);font-weight:400;
+  }
 
-    .testa {
-      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-      border-bottom: 1px solid #ddd6c8; padding-bottom: 14px;
-    }
+  .nome{
+    font-family:Fraunces,Georgia,serif;font-weight:400;
+    font-size:clamp(30px,4.4vw,44px);line-height:1;letter-spacing:-.015em;
+    margin:0 0 6px;
+  }
 
-    .testa h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 400; margin: 0; }
-    .paese { display: block; font-size: 13px; color: var(--grigio); }
+  .luogo{
+    font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--seppia);
+    margin:0 0 16px;
+  }
 
-    .stagione { font-size: 13px; font-weight: 600; white-space: nowrap; }
-    .stagione.bassa { color: var(--verde); }
-    .stagione.media { color: var(--oro); }
-    .stagione.alta  { color: var(--rosso); }
+  .verdetto{
+    display:inline-block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+    font-weight:600;padding:4px 0;border-top:2px solid;border-bottom:1px solid var(--filo);
+    margin-bottom:16px;
+  }
+  .verdetto.si{color:var(--verde);border-top-color:var(--verde)}
+  .verdetto.forse{color:var(--oro);border-top-color:var(--oro)}
+  .verdetto.no{color:var(--rosso);border-top-color:var(--rosso)}
 
+  .sommario{
+    font-family:Fraunces,Georgia,serif;font-size:19px;font-weight:300;line-height:1.5;
+    margin:0 0 20px;max-width:58ch;
+  }
+  .sommario b{font-weight:600}
 
-    /* --- Priorità: cosa conta per te --- */
-    .priorita {
-      max-width: 900px; margin: 0 auto; padding: 4px 20px 24px;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px 20px;
-      color: var(--gelo);
-    }
+  figure{margin:0 0 20px}
+  figure img{width:100%;height:230px;object-fit:cover;display:block;filter:saturate(.85)}
+  figcaption{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--seppia);padding-top:6px}
 
-    .leva label { display: block; font-size: 13px; margin-bottom: 4px; }
-    .leva output { color: var(--oro); font-weight: 600; }
+  .tabella{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));
+    border-top:1px solid var(--inchiostro);margin-bottom:20px;
+  }
+  .cella{padding:10px 14px 12px 0;border-right:1px solid var(--filo)}
+  .cella:last-child{border-right:none}
+  .cella dt{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--seppia);margin-bottom:3px}
+  .cella dd{margin:0;font-family:Fraunces,serif;font-size:21px;font-weight:400}
+  .cella dd small{font-size:12px;font-family:Inter,sans-serif;color:var(--seppia)}
 
-    .leva input[type=range] {
-      width: 100%; accent-color: var(--oro); cursor: pointer;
-    }
+  .note{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px 26px}
+  .note h4{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--seppia);margin:0 0 3px;font-weight:600}
+  .note p{margin:0;font-size:14.5px;line-height:1.5}
 
-    .punteggio { text-align: right; white-space: nowrap; }
-    .punteggio b { font-size: 30px; font-weight: 600; color: var(--oro); display: block; line-height: 1; }
-    .punteggio span { font-size: 11px; color: var(--grigio); }
+  .avviso{font-size:12px;color:var(--rosso);margin:14px 0 0;font-style:italic}
 
-    .perche {
-      background: #efe9dd; border-radius: 3px; padding: 10px 12px;
-      font-size: 13px; margin: 0 0 16px;
-    }
+  .vuoto{padding:50px 0;font-family:Fraunces,serif;font-size:22px;font-weight:300;color:var(--seppia)}
 
-    .prezzo { margin: 16px 0 14px; }
-    .prezzo b { font-size: 26px; }
-    .prezzo span { font-size: 14px; color: var(--grigio); }
+  footer{
+    border-top:3px double var(--inchiostro);margin-top:10px;padding:22px 0 56px;
+    font-size:12px;color:var(--seppia);max-width:72ch;
+  }
 
-    /* Da dove viene il prezzo: rilevato a mano o solo stimato */
-    .fonte { font-size: 12px; margin: 0 0 18px; color: var(--grigio); }
-    .fonte.stima { color: var(--rosso); }
-
-    .dati { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-    .dato span { display: block; font-size: 12px; color: var(--grigio); }
-    .dato b { font-weight: 600; }
-
-    .blocco { margin-bottom: 14px; }
-    .blocco h3 { font-size: 13px; font-weight: 600; color: var(--grigio); margin: 0 0 4px; }
-    .blocco p { margin: 0; font-size: 15px; }
-
-    .vuoto {
-      grid-column: 1 / -1;
-      color: var(--gelo);
-      border: 1px dashed #33505f; border-radius: 4px; padding: 28px;
-    }
-
-    footer {
-      max-width: 900px; margin: 0 auto; padding: 0 20px 48px;
-      color: var(--gelo); font-size: 13px;
-    }
-
-    footer p { max-width: 62ch; }
-
-    @media (max-width: 500px) {
-      h1 { font-size: 32px; }
-      header { padding-top: 36px; }
-      .cerca { flex-wrap: wrap; }
-    }
-  </style>
+  @media(max-width:640px){
+    .foglio{padding:0 20px}
+    .voce{grid-template-columns:1fr;gap:0}
+    .posizione{font-size:30px;margin-bottom:6px}
+    figure img{height:180px}
+  }
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>Fuori stagione costa la metà.<br>Ecco dove vale la pena.</h1>
-    <p>Cerca una città, un mese, o tutti e due insieme. Oppure scegli un mese e guarda dove conviene andare.</p>
+<div class="foglio">
+
+  <header class="testata">
+    <div class="riga-alta">
+      <span>Guida alla bassa stagione</span>
+      <span id="intestazione-mese">Gennaio</span>
+    </div>
+    <h1 class="marchio">Fuori stagione</h1>
+    <p class="occhiello">Dove l'Europa costa la metà, mese per mese: quanto si spende, che tempo fa davvero, e cosa resta aperto la sera.</p>
   </header>
 
-  <div class="cerca">
-    <input id="cerca" type="search" autocomplete="off"
-           placeholder="Prova: praga gennaio, oppure atene, oppure aprile">
-    <button id="pulisci" type="button">Pulisci</button>
-  </div>
+  <section class="strumenti">
+    <label class="etichetta" for="cerca">Cerca una città, un mese, o entrambi</label>
+    <input id="cerca" class="campo" type="search" autocomplete="off" placeholder="praga gennaio">
 
-  <nav class="mesi" id="mesi"></nav>
+    <nav class="mesi" id="mesi"></nav>
 
-  <div class="priorita" id="priorita"></div>
+    <div class="priorita" id="priorita"></div>
+  </section>
+
+  <p class="conteggio" id="conteggio"></p>
 
   <main id="lista"></main>
 
-  <footer>
-    <p id="nota"></p>
-  </footer>
+  <footer id="nota"></footer>
 
-  <script src="citta.js"></script>
-  <script>
-    const mesi = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
-                  "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+</div>
 
-    let meseScelto = "gennaio";
-    let cittaCercate = [];   // vuoto = mostra tutte le città
+<script src="citta.js"></script>
+<script>
+  const mesi = ["gennaio","febbraio","marzo","aprile","maggio","giugno",
+                "luglio","agosto","settembre","ottobre","novembre","dicembre"];
 
-    const boxMesi = document.getElementById("mesi");
-    const lista = document.getElementById("lista");
-    const campo = document.getElementById("cerca");
+  let meseScelto = "gennaio";
+  let cittaCercate = [];
 
-    // Toglie accenti e maiuscole, così "Atene", "atene" e "àtene" diventano uguali.
-    // È il passaggio che rende una ricerca tollerante agli errori di battitura.
-    function normalizza(testo) {
-      return testo
-        .toLowerCase()
-        .normalize("NFD")                  // separa le lettere dagli accenti
-        .replace(/[\u0300-\u036f]/g, "")   // butta via gli accenti
-        .trim();
-    }
+  const pesi = { prezzo:2, caldo:2, sole:1, sicurezza:1, cibo:1 };
+  const etichette = {
+    prezzo:"Spendere poco", caldo:"Clima mite", sole:"Giorni di sole",
+    sicurezza:"Sicurezza", cibo:"Mangiare a poco"
+  };
 
-    // Se i prezzi di quella città non sono ancora stati rilevati, restituisco null:
-    // il resto del codice sa cosa farne e mostra "da rilevare" invece di inventare.
-    function prezzoDelMese(c, stagione) {
-      if (c.hotelBassa === null || c.hotelAlta === null) return null;
-      if (stagione === "bassa") return c.hotelBassa;
-      if (stagione === "alta")  return c.hotelAlta;
-      return Math.round((c.hotelBassa + c.hotelAlta) / 2);
-    }
+  const boxMesi = document.getElementById("mesi");
+  const boxPriorita = document.getElementById("priorita");
+  const lista = document.getElementById("lista");
+  const campo = document.getElementById("cerca");
 
-    function risparmio(c, prezzo) {
-      return Math.round((1 - prezzo / c.hotelAlta) * 100);
-    }
+  function normalizza(t){
+    return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+  }
 
-    // ---------- IL MOTORE DEL PUNTEGGIO ----------
-    //
-    // Ogni criterio riceve un voto da 0 a 100 per quella città in quel mese.
-    // Poi i voti vengono mediati usando i pesi che l'utente sceglie con i cursori.
-    // È lo stesso principio dei motori di ricerca: non esiste "il migliore",
-    // esiste il migliore PER TE.
+  function prezzoDelMese(c, stagione){
+    if(c.hotelBassa === null || c.hotelAlta === null) return null;
+    if(stagione === "bassa") return c.hotelBassa;
+    if(stagione === "alta")  return c.hotelAlta;
+    return Math.round((c.hotelBassa + c.hotelAlta) / 2);
+  }
 
-    // Quanto contano i criteri. 0 = non mi interessa, 3 = fondamentale.
-    const pesi = { prezzo: 2, caldo: 2, sole: 1, sicurezza: 1, cibo: 1 };
+  function risparmio(c, prezzo){
+    return Math.round((1 - prezzo / c.hotelAlta) * 100);
+  }
 
-    const etichette = {
-      prezzo: "Spendere poco",
-      caldo: "Clima mite",
-      sole: "Giorni di sole",
-      sicurezza: "Sicurezza",
-      cibo: "Mangiare a poco"
+  function voto(v, min, max){
+    return Math.max(0, Math.min(1, (v - min) / (max - min))) * 100;
+  }
+
+  function votiDi(c, mese){
+    const m = c.mesi[mese];
+    const p = prezzoDelMese(c, m.stagione);
+    return {
+      prezzo: p === null ? null : voto(200 - p, 0, 160),
+      caldo: m.tmax >= 20 && m.tmax <= 28 ? 100 : (m.tmax > 28 ? voto(40 - m.tmax, 0, 12) : voto(m.tmax, -5, 20)),
+      sole: voto(m.sole, 30, 340),
+      sicurezza: c.sicurezza === null ? null : voto(c.sicurezza, 40, 80),
+      cibo: c.pasto === null ? null : voto(20 - c.pasto, 0, 12)
     };
+  }
 
-    // Trasforma un valore in un voto 0-100, sapendo il minimo e il massimo possibili.
-    function voto(valore, minimo, massimo) {
-      const v = (valore - minimo) / (massimo - minimo);
-      return Math.max(0, Math.min(1, v)) * 100;
+  function punteggioDi(c, mese){
+    const v = votiDi(c, mese);
+    let somma = 0, totale = 0;
+    for(const k in pesi){
+      if(v[k] === null) continue;
+      somma += v[k] * pesi[k];
+      totale += pesi[k];
+    }
+    return totale === 0 ? 0 : Math.round(somma / totale);
+  }
+
+  // Invece del voto numerico, un verdetto a parole: si ricorda e si racconta meglio.
+  function verdetto(punti, stagione){
+    if(punti >= 72) return { testo:"Ci vado subito", classe:"si" };
+    if(punti >= 58) return { testo:"Buon affare", classe:"forse" };
+    if(stagione === "alta") return { testo:"Aspetta la bassa stagione", classe:"no" };
+    return { testo:"Solo se ti va bene così", classe:"no" };
+  }
+
+  // Una frase costruita dai dati, diversa per ogni città e per ogni mese.
+  function sommario(c, mese){
+    const m = c.mesi[mese];
+    const p = prezzoDelMese(c, m.stagione);
+    const v = votiDi(c, mese);
+    const pezzi = [];
+
+    if(p !== null){
+      const sc = risparmio(c, p);
+      pezzi.push(sc > 0
+        ? `Si dorme con <b>${p} €</b>, il <b>${sc}%</b> in meno che in alta stagione`
+        : `Si dorme con <b>${p} €</b>, ed è il periodo più caro dell'anno`);
+    } else {
+      pezzi.push("I prezzi degli hotel non sono ancora stati rilevati");
     }
 
-    function votiDi(c, mese) {
-      const m = c.mesi[mese];
-      const prezzo = prezzoDelMese(c, m.stagione);
+    if(m.tmax >= 20 && m.tmax <= 28) pezzi.push(`si sta fuori con <b>${m.tmax}°</b>`);
+    else if(m.tmax > 28) pezzi.push(`fa caldo, <b>${m.tmax}°</b> di massima`);
+    else if(m.tmax < 6) pezzi.push(`fa freddo davvero, <b>${m.tmax}°</b> di massima`);
+    else pezzi.push(`la massima si ferma a <b>${m.tmax}°</b>`);
 
-      return {
-        prezzo: prezzo === null ? null : voto(200 - prezzo, 0, 160),
-        caldo: m.tmax >= 20 && m.tmax <= 28 ? 100 : (m.tmax > 28 ? voto(40 - m.tmax, 0, 12) : voto(m.tmax, -5, 20)),
-        sole: voto(m.sole, 30, 340),
-        sicurezza: c.sicurezza === null ? null : voto(c.sicurezza, 40, 80),
-        cibo: c.pasto === null ? null : voto(20 - c.pasto, 0, 12)
-      };
-    }
+    if(v.sole > 70) pezzi.push(`e il sole non manca (${m.sole} ore nel mese)`);
+    else if(v.sole < 30) pezzi.push(`con poco sole, appena ${m.sole} ore in tutto il mese`);
 
-    function punteggioDi(c, mese) {
-      const v = votiDi(c, mese);
-      let somma = 0, totalePesi = 0;
+    return pezzi.join(", ") + ".";
+  }
 
-      for (const criterio in pesi) {
-        if (v[criterio] === null) continue;   // dato mancante: quel criterio non vota
-        somma += v[criterio] * pesi[criterio];
-        totalePesi += pesi[criterio];
-      }
-
-      // Se l'utente azzera tutti i cursori, evito la divisione per zero.
-      return totalePesi === 0 ? 0 : Math.round(somma / totalePesi);
-    }
-
-    // Il criterio in cui questa città va meglio, tra quelli che interessano all'utente.
-    function puntoForte(c, mese) {
-      const v = votiDi(c, mese);
-      let migliore = null, votoMigliore = -1;
-
-      for (const criterio in pesi) {
-        if (pesi[criterio] > 0 && v[criterio] !== null && v[criterio] > votoMigliore) {
-          votoMigliore = v[criterio];
-          migliore = criterio;
-        }
-      }
-      return migliore;
-    }
-
-    // Quanti criteri non hanno ancora un dato: serve a dirlo sulla scheda.
-    function datiMancanti(c, mese) {
-      const v = votiDi(c, mese);
-      const mancanti = [];
-      for (const criterio in v) {
-        if (v[criterio] === null) mancanti.push(etichette[criterio].toLowerCase());
-      }
-      return mancanti;
-    }
-
-    // ---------- I CURSORI DELLE PRIORITÀ ----------
-    const boxPriorita = document.getElementById("priorita");
-
-    for (const criterio in pesi) {
-      const leva = document.createElement("div");
-      leva.className = "leva";
-      leva.innerHTML =
-        '<label>' + etichette[criterio] + ': <output id="out-' + criterio + '">' + pesi[criterio] + '</output></label>' +
-        '<input type="range" min="0" max="3" step="1" value="' + pesi[criterio] + '" id="lev-' + criterio + '">';
-      boxPriorita.appendChild(leva);
-
-      leva.querySelector("input").addEventListener("input", function () {
-        pesi[criterio] = Number(this.value);
-        document.getElementById("out-" + criterio).textContent = this.value;
-        disegnaCitta();
-      });
-    }
-
-    // ---------- I PULSANTI DEI MESI ----------
-    mesi.forEach(function (mese) {
-      const bottone = document.createElement("button");
-      bottone.textContent = mese;
-      bottone.addEventListener("click", function () {
-        meseScelto = mese;
-        disegnaMesi();
-        disegnaCitta();
-      });
-      boxMesi.appendChild(bottone);
+  // --- cursori ---
+  for(const criterio in pesi){
+    const leva = document.createElement("div");
+    leva.className = "leva";
+    leva.innerHTML =
+      '<label>' + etichette[criterio] + ' <output id="out-'+criterio+'">'+pesi[criterio]+'</output></label>' +
+      '<input type="range" min="0" max="3" step="1" value="'+pesi[criterio]+'">';
+    boxPriorita.appendChild(leva);
+    leva.querySelector("input").addEventListener("input", function(){
+      pesi[criterio] = Number(this.value);
+      document.getElementById("out-"+criterio).textContent = this.value;
+      disegna();
     });
+  }
 
-    function disegnaMesi() {
-      boxMesi.querySelectorAll("button").forEach(function (b) {
-        b.classList.toggle("attivo", b.textContent === meseScelto);
-      });
-    }
+  // --- mesi ---
+  mesi.forEach(function(mese){
+    const b = document.createElement("button");
+    b.textContent = mese;
+    b.addEventListener("click", function(){ meseScelto = mese; disegnaMesi(); disegna(); });
+    boxMesi.appendChild(b);
+  });
 
-    // ---------- LA RICERCA ----------
-    function interpreta(testo) {
-      const parole = normalizza(testo).split(/\s+/).filter(Boolean);
-      cittaCercate = [];
-
-      parole.forEach(function (parola) {
-        if (parola.length < 3) return;
-
-        const mese = mesi.find(function (m) { return m.startsWith(parola); });
-        if (mese) { meseScelto = mese; return; }
-
-        citta.forEach(function (c) {
-          if (normalizza(c.nome).startsWith(parola) && !cittaCercate.includes(c.nome)) {
-            cittaCercate.push(c.nome);
-          }
-        });
-      });
-    }
-
-    campo.addEventListener("input", function () {
-      interpreta(campo.value);
-      disegnaMesi();
-      disegnaCitta();
+  function disegnaMesi(){
+    boxMesi.querySelectorAll("button").forEach(function(b){
+      b.classList.toggle("attivo", b.textContent === meseScelto);
     });
+    document.getElementById("intestazione-mese").textContent =
+      meseScelto.charAt(0).toUpperCase() + meseScelto.slice(1);
+  }
 
-    document.getElementById("pulisci").addEventListener("click", function () {
-      campo.value = "";
-      cittaCercate = [];
-      disegnaCitta();
-      campo.focus();
+  // --- ricerca ---
+  campo.addEventListener("input", function(){
+    const parole = normalizza(campo.value).split(/\s+/).filter(Boolean);
+    cittaCercate = [];
+    parole.forEach(function(parola){
+      if(parola.length < 3) return;
+      const mese = mesi.find(function(m){ return m.startsWith(parola); });
+      if(mese){ meseScelto = mese; return; }
+      citta.forEach(function(c){
+        if(normalizza(c.nome).startsWith(parola) && !cittaCercate.includes(c.nome)) cittaCercate.push(c.nome);
+      });
     });
-
-    // ---------- LE SCHEDE ----------
-    function disegnaCitta() {
-      let scelte = citta.slice();
-
-      if (cittaCercate.length > 0) {
-        scelte = scelte.filter(function (c) { return cittaCercate.includes(c.nome); });
-      }
-
-      // Ordino per punteggio: il migliore per le priorità scelte viene per primo.
-      scelte.sort(function (a, b) {
-        return punteggioDi(b, meseScelto) - punteggioDi(a, meseScelto);
-      });
-
-      lista.innerHTML = "";
-
-      if (scelte.length === 0) {
-        lista.innerHTML = '<p class="vuoto">Nessuna città con questo nome. Per ora ci sono ' +
-          citta.map(function (c) { return c.nome; }).join(", ") + '.</p>';
-        aggiornaNota();
-        return;
-      }
-
-      scelte.forEach(function (c) {
-        const m = c.mesi[meseScelto];
-        const prezzo = prezzoDelMese(c, m.stagione);
-        const sconto = risparmio(c, prezzo);
-        const notte = m.stagione === "alta" ? c.notteAlta : c.notteBassa;
-        const punti = punteggioDi(c, meseScelto);
-        const forte = puntoForte(c, meseScelto);
-
-        const mancanti = datiMancanti(c, meseScelto);
-
-        const riga = prezzo === null
-          ? '<span>Prezzo hotel non ancora rilevato</span>'
-          : (sconto > 0
-            ? `<b>${prezzo} €</b> <span>a notte · ${sconto}% meno che in alta stagione</span>`
-            : `<b>${prezzo} €</b> <span>a notte · è il periodo più caro</span>`);
-
-        const fonte = prezzo === null
-          ? '<p class="fonte stima">Scheda incompleta: manca ' + mancanti.join(", ") + '</p>'
-          : '<p class="fonte ' + (c.prezziRilevati ? '' : 'stima') + '">' +
-            (c.prezziRilevati ? 'Prezzo rilevato a mano su Booking' : 'Stima di partenza, ancora da verificare') +
-            '</p>';
-
-        lista.innerHTML += `
-          <article class="scheda">
-            <div class="testa">
-              <h2>${c.nome}<span class="paese">${c.paese} · ${meseScelto}</span></h2>
-              <div class="punteggio"><b>${punti}</b><span>su 100 per te</span></div>
-            </div>
-
-            <p class="perche">
-              <strong>Stagione ${m.stagione}.</strong>
-              ${forte ? "Il suo punto forte tra le cose che ti interessano: " + etichette[forte].toLowerCase() + "." : "Alza almeno un cursore per avere un consiglio."}
-            </p>
-
-            <p class="prezzo">${riga}</p>
-            ${fonte}
-
-            <div class="dati">
-              <div class="dato"><span>Temperature</span><b>da ${m.tmin}° a ${m.tmax}°</b></div>
-              <div class="dato"><span>Ore di sole nel mese</span><b>circa ${m.sole}</b></div>
-              <div class="dato"><span>Pasto in trattoria</span><b>${c.pasto === null ? "—" : c.pasto + " €"}</b></div>
-              <div class="dato"><span>Caffè e birra</span><b>${c.caffe === null ? "—" : c.caffe + " € / " + c.birra + " €"}</b></div>
-              <div class="dato"><span>Sicurezza</span><b>${c.sicurezza === null ? "—" : c.sicurezza + "/100"}</b></div>
-            </div>
-
-            <div class="blocco"><h3>Da vedere</h3><p>${c.vedere.join(" · ")}</p></div>
-            <div class="blocco"><h3>Cosa mangiare</h3><p>${c.mangiare.join(" · ")}</p></div>
-            ${notte ? `<div class="blocco"><h3>La sera</h3><p>${notte}</p></div>` : ""}
-          </article>
-        `;
-      });
-
-      aggiornaNota();
-    }
-
-    function aggiornaNota() {
-      document.getElementById("nota").textContent =
-        "Il punteggio è calcolato sui cursori qui sopra: cambiali e l'ordine cambia. " +
-        "Prezzi hotel: rilevati a mano dove indicato, altrove stime da verificare. " +
-        "Cibo e sicurezza: Numbeo 2026. Clima: medie storiche.";
-    }
-
     disegnaMesi();
-    disegnaCitta();
-  </script>
+    disegna();
+  });
+
+  // --- articoli ---
+  function disegna(){
+    let scelte = citta.slice();
+    if(cittaCercate.length > 0){
+      scelte = scelte.filter(function(c){ return cittaCercate.includes(c.nome); });
+    }
+    scelte.sort(function(a,b){ return punteggioDi(b, meseScelto) - punteggioDi(a, meseScelto); });
+
+    lista.innerHTML = "";
+    document.getElementById("conteggio").textContent =
+      scelte.length + (scelte.length === 1 ? " città" : " città") + " · in ordine di quanto ti convengono";
+
+    if(scelte.length === 0){
+      lista.innerHTML = '<p class="vuoto">Nessuna città con questo nome.</p>';
+      return;
+    }
+
+    scelte.forEach(function(c, i){
+      const m = c.mesi[meseScelto];
+      const p = prezzoDelMese(c, m.stagione);
+      const punti = punteggioDi(c, meseScelto);
+      const ver = verdetto(punti, m.stagione);
+      const notte = m.stagione === "alta" ? c.notteAlta : c.notteBassa;
+
+      const figura = c.foto
+        ? `<figure><img src="${c.foto}" alt="${c.nome}" loading="lazy"><figcaption>${c.nome}, ${c.paese}</figcaption></figure>`
+        : "";
+
+      const avviso = p === null
+        ? '<p class="avviso">Scheda incompleta: prezzi degli hotel ancora da rilevare.</p>'
+        : (c.prezziRilevati ? "" : '<p class="avviso">Prezzi stimati, non ancora verificati su Booking.</p>');
+
+      lista.innerHTML += `
+        <article class="voce">
+          <div class="posizione">${String(i+1).padStart(2,"0")}</div>
+          <div>
+            <h2 class="nome">${c.nome}</h2>
+            <p class="luogo">${c.paese} &nbsp;·&nbsp; ${meseScelto} &nbsp;·&nbsp; stagione ${m.stagione}</p>
+
+            <div class="verdetto ${ver.classe}">${ver.testo}</div>
+
+            ${figura}
+
+            <p class="sommario">${sommario(c, meseScelto)}</p>
+
+            <dl class="tabella">
+              <div class="cella"><dt>Notte</dt><dd>${p === null ? "—" : p + " <small>€</small>"}</dd></div>
+              <div class="cella"><dt>Temperature</dt><dd>${m.tmin}/${m.tmax}<small>°</small></dd></div>
+              <div class="cella"><dt>Ore di sole</dt><dd>${m.sole}<small>h</small></dd></div>
+              <div class="cella"><dt>Pasto</dt><dd>${c.pasto === null ? "—" : c.pasto + " <small>€</small>"}</dd></div>
+              <div class="cella"><dt>Birra</dt><dd>${c.birra === null ? "—" : c.birra + " <small>€</small>"}</dd></div>
+              <div class="cella"><dt>Sicurezza</dt><dd>${c.sicurezza === null ? "—" : c.sicurezza}<small>/100</small></dd></div>
+            </dl>
+
+            <div class="note">
+              <div><h4>Da vedere</h4><p>${c.vedere.join(" · ")}</p></div>
+              <div><h4>A tavola</h4><p>${c.mangiare.join(" · ")}</p></div>
+              ${notte ? `<div><h4>La sera</h4><p>${notte}</p></div>` : ""}
+            </div>
+
+            ${avviso}
+          </div>
+        </article>
+      `;
+    });
+  }
+
+  document.getElementById("nota").textContent =
+    "Clima: medie degli ultimi dieci anni, da Open-Meteo. Sicurezza e prezzi di cibo e bevande: Numbeo 2026. " +
+    "I prezzi degli hotel sono rilevati a mano dove indicato, altrove stimati: verifica sempre prima di prenotare.";
+
+  disegnaMesi();
+  disegna();
+</script>
 
 </body>
 </html>
